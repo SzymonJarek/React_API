@@ -31,7 +31,7 @@ namespace API
                     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occured during migration");
                 }
-            }        
+            }      
             host.Run();
         }
 
