@@ -14,6 +14,7 @@ interface IProps {
   setSelectedActivity: (activity: IActivity | null) => void;
   handleCreateActivity: (activity: IActivity) => void;
   handleEditActivity: (activity: IActivity) => void;
+  handleDeleteActivity:(id:string) => void;
 }
 
 //if we use curly brackets wit ({ativities}) we can use them directly and not passing props
@@ -25,12 +26,13 @@ export const ActivityDashboard: React.FC<IProps> = ({
   setEditMode,
   setSelectedActivity,
   handleCreateActivity,
-  handleEditActivity
+  handleEditActivity,
+  handleDeleteActivity
 }) => {
   return (
     <Grid>
       <Grid.Column width={10}>
-        <ActivityList activities={activities} selectActivity={selectActivity} />
+        <ActivityList activities={activities} selectActivity={selectActivity} handleDeleteActivity={handleDeleteActivity} />
       </Grid.Column>
       <Grid.Column width={6}>
         {selectedActivity && !editMode && (
@@ -42,6 +44,7 @@ export const ActivityDashboard: React.FC<IProps> = ({
         )}
         {editMode && (
           <ActivityForm
+            key={(selectedActivity && selectedActivity.id) || 0}
             setEditMode={setEditMode}
             activity={selectedActivity!}
             createActivity={handleCreateActivity}

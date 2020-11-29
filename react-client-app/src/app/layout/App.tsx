@@ -23,22 +23,38 @@ const App = () => {
   const openCreateForm = () => {
     setSelectedActivity(null);
     setEditMode(true);
-  }
+  };
 
   const handleCreateActivity = (activity: IActivity) => {
-    setActivities([...activities,activity]);
-  }
+    setActivities([...activities, activity]);
+    setSelectedActivity(activity);
+    setEditMode(false);
+  };
 
   const handleEditActivity = (activity: IActivity) => {
-    setActivities([...activities.filter(x => x.id !== activity.id), activity]);
-  }
+    setActivities([
+      ...activities.filter((x) => x.id !== activity.id),
+      activity,
+    ]);
+    setSelectedActivity(activity);
+    setEditMode(false);
+  };
+
+  const handleDeleteActivity = (id: string) => {
+    setActivities([...activities.filter((x) => x.id !== id)]);
+  };
 
   useEffect(() => {
     axios
       .get<IActivity[]>("http://localhost:5000/api/activities")
       .then((response) => {
-        console.log(response);
-        setActivities(response.data);
+        let activities: IActivity[] = [];
+        response.data.forEach((activity) => {
+          activity.date = activity.date.split(".")[0];
+          activities.push(activity);
+        });
+        // console.log(response);
+        setActivities(activities);
       });
   }, []);
 
@@ -48,6 +64,7 @@ const App = () => {
       <Navbar openCreateForm={openCreateForm} />
       <Container style={{ marginTop: "7em" }}>
         <ActivityDashboard
+          handleDeleteActivity={handleDeleteActivity}
           activities={activities}
           selectActivity={handleSelectedActivity}
           selectedActivity={selectedActivity}

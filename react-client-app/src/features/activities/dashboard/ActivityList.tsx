@@ -5,11 +5,13 @@ import { Button, Item, Label, Segment } from "semantic-ui-react";
 interface IProps {
   activities: IActivity[];
   selectActivity: (id: string) => void;
+  handleDeleteActivity: (id: string) => void;
 }
 
 export const ActivityList: React.FC<IProps> = ({
   activities,
   selectActivity,
+  handleDeleteActivity,
 }) => {
   return (
     <Segment clearing>
@@ -31,6 +33,12 @@ export const ActivityList: React.FC<IProps> = ({
                   floated="right"
                   content="View"
                   color="blue"
+                />
+                <Button
+                  onClick={() => handleDeleteActivity(activity.id)}
+                  floated="right"
+                  content="Delete"
+                  color="red"
                 />
                 <Label basic content={activity.category} />
               </Item.Extra>
